@@ -14,8 +14,12 @@ class SlidingWindow:
         self.messages: list[Message] = []
 
     def push(self, message: Message) -> None:
-        raise NotImplementedError
+        self.messages.append(message)
+        if len(self.messages) > self.max_size:
+            self.messages.pop(0)
 
     def push_high_priority(self, message: Message) -> None:
-        """User interjection path: bypasses normal ordering, injected for immediate effect."""
-        raise NotImplementedError
+        """User interjection path: flags the message so impulse scoring reacts to it
+        immediately, then enters the window like any other message (still subject to the cap)."""
+        message.high_priority = True
+        self.push(message)

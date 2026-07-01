@@ -40,16 +40,16 @@ backend/                  # Python 3.13, venv at backend/.venv
     main.py                # FastAPI app, CORS, router mounting — DONE (health check only)
     api/                    # HTTP routes: health done; session config, rename, SSE stream endpoint still to add
     engine/                 # the no-moderator turn engine — kept free of FastAPI/HTTP concerns so it's unit-testable in isolation
-      window.py              # sliding-window message queue (cap 5-8) + pinned scenario, high-priority injection path — stubbed
-      impulse.py             # speaking-impulse scoring (recency + direct-address + relationship matrix + jitter) + next-speaker selection — stubbed
-      relationships.py       # 16x16 MBTI friction/affinity matrix (MVP: derived from dichotomy overlap), consumed by impulse.py and personas/ — stubbed
+      window.py              # sliding-window message queue (cap 5-8) + pinned scenario, high-priority injection path — DONE
+      impulse.py             # speaking-impulse scoring (recency + direct-address + relationship magnitude + jitter) + next-speaker selection — DONE (RNG is injectable for deterministic tests)
+      relationships.py       # dichotomy-overlap friction/affinity score in [-1,1] — DONE (still swappable for a hand-tuned table later)
       session.py             # per-session runtime state: roster, rename map, user message count, turn/time cap — implemented, not yet wired to api/
     personas/               # one system-prompt builder per MBTI type, template from docs/PRD.md — template in place, build_system_prompt() + all 16 CORE_DRIVERS still to add
     moderation/             # app-level content filter + output-contract enforcement — stubbed
     llm/                    # streaming completion client behind a provider-agnostic interface (llm/base.py) — interface only, no provider implementation yet
     schemas/                # Pydantic models — DONE: Character, Message, SessionConfig/State, MBTIType, EmotionState
     store/                  # persistence for shareable session transcripts — stubbed, no DB wired yet (SQLite is enough for MVP)
-    tests/                  # test_health.py only so far
+    tests/                  # test_health.py, test_relationships.py, test_window.py, test_impulse.py
   pyproject.toml           # pytest + ruff config
   requirements.txt
 frontend/                 # Vite + React 19 + TypeScript + Tailwind v4
