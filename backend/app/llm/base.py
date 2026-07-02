@@ -7,10 +7,9 @@ class LLMClient(ABC):
 
     Nothing outside this package should know which provider is in use —
     swapping DeepSeek/OpenAI/Claude must not touch engine/ or personas/.
+    Implementations are async generators yielding text chunks as they arrive.
     """
 
     @abstractmethod
-    async def stream_completion(self, system_prompt: str, context: str) -> AsyncIterator[str]:
-        """Yields text chunks as they arrive from the provider."""
-        raise NotImplementedError
-        yield ""  # pragma: no cover - makes this an async generator for subclasses to override
+    def stream_completion(self, system_prompt: str, context: str) -> AsyncIterator[str]:
+        ...

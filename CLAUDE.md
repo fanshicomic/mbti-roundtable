@@ -46,10 +46,10 @@ backend/                  # Python 3.13, venv at backend/.venv
       session.py             # per-session runtime state: roster, rename map, user message count, turn/time cap — implemented, not yet wired to api/
     personas/               # one system-prompt builder per MBTI type, template from docs/PRD.md — template in place, build_system_prompt() + all 16 CORE_DRIVERS still to add
     moderation/             # app-level content filter + output-contract enforcement — stubbed
-    llm/                    # streaming completion client behind a provider-agnostic interface (llm/base.py) — interface only, no provider implementation yet
+    llm/                    # streaming completion client behind a provider-agnostic interface (llm/base.py) — DONE: StubLLMClient (no key/network) + DeepSeekClient; get_llm_client() picks via MBTI_LLM_PROVIDER
     schemas/                # Pydantic models — DONE: Character, Message, SessionConfig/State, MBTIType, EmotionState
     store/                  # persistence for shareable session transcripts — stubbed, no DB wired yet (SQLite is enough for MVP)
-    tests/                  # test_health.py, test_relationships.py, test_window.py, test_impulse.py
+    tests/                  # test_health.py, test_relationships.py, test_window.py, test_impulse.py, test_llm.py
   pyproject.toml           # pytest + ruff config
   requirements.txt
 frontend/                 # Vite + React 19 + TypeScript + Tailwind v4
@@ -85,6 +85,8 @@ docs/
 - Run all tests: `python -m pytest -q`
 - Run a single test: `python -m pytest -q tests/test_health.py::test_health`
 - Lint: `ruff check .`
+
+Config is env-driven (`MBTI_` prefix, see `app/config.py`). LLM defaults to the no-key `stub` provider; to use DeepSeek set `MBTI_LLM_PROVIDER=deepseek` and `MBTI_DEEPSEEK_API_KEY=...` (e.g. in a git-ignored `backend/.env`). Never commit keys.
 
 **Frontend** (from `frontend/`):
 - Install deps: `npm install`
