@@ -44,12 +44,12 @@ backend/                  # Python 3.13, venv at backend/.venv
       impulse.py             # speaking-impulse scoring (recency + direct-address + relationship magnitude + jitter) + next-speaker selection — DONE (RNG is injectable for deterministic tests)
       relationships.py       # dichotomy-overlap friction/affinity score in [-1,1] — DONE (still swappable for a hand-tuned table later)
       session.py             # per-session runtime state: roster, rename map, user message count, turn/time cap — implemented, not yet wired to api/
-    personas/               # one system-prompt builder per MBTI type, template from docs/PRD.md — template in place, build_system_prompt() + all 16 CORE_DRIVERS still to add
+    personas/               # build_system_prompt() + all 16 CORE_DRIVERS — DONE. Chinese template (≤20 chars, respond-in-Chinese) per PRD structure; name = custom_name or mbti_type, [mbti_type] slot always the real type
     moderation/             # app-level content filter + output-contract enforcement — stubbed
     llm/                    # streaming completion client behind a provider-agnostic interface (llm/base.py) — DONE: StubLLMClient (no key/network) + DeepSeekClient; get_llm_client() picks via MBTI_LLM_PROVIDER
     schemas/                # Pydantic models — DONE: Character, Message, SessionConfig/State, MBTIType, EmotionState
     store/                  # persistence for shareable session transcripts — stubbed, no DB wired yet (SQLite is enough for MVP)
-    tests/                  # test_health.py, test_relationships.py, test_window.py, test_impulse.py, test_llm.py
+    tests/                  # test_health.py, test_relationships.py, test_window.py, test_impulse.py, test_llm.py, test_personas.py
   pyproject.toml           # pytest + ruff config
   requirements.txt
 frontend/                 # Vite + React 19 + TypeScript + Tailwind v4
